@@ -11,6 +11,19 @@
 |
 */
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
 Route::get('/', function () {
     return view('welcome');
+});
+
+Auth::routes();
+
+// Route::get('/home', 'HomeController@index')->name('home');
+
+Route::group(['middleware' => 'auth', 'namespace' => 'Dashboard', 'prefix' => 'dashboard'], function($route) {
+    $route->get('/', 'DashboardController@index');
+    $route->resource('/categories', 'CategoryController');
+    $route->resource('/users', 'UserController');
 });
